@@ -52,8 +52,9 @@ namespace p5.Controllers
         }
 
         // GET: Reparations/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var voitureList = await _context.Voiture.ToListAsync();
             //ici creation de la liste "categorie"
             var categories = new List<string>
     {
@@ -66,7 +67,7 @@ namespace p5.Controllers
         "Système d'allumage", 
         "Pneumatique",
     };
-
+            ViewBag.Voitures = new SelectList(voitureList, "Id", "Marque");
             ViewBag.Categories = new SelectList(categories);
 
             
@@ -79,15 +80,16 @@ namespace p5.Controllers
             // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Create([Bind("Id,Categorie")] Reparation reparation)
+            public async Task<IActionResult> Create(CreateReparationModel createReparationModel)
             {
-                if (ModelState.IsValid)
+
+                _context.Reparation.Add(new Reparation
                 {
-                    _context.Add(reparation);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(reparation);
+                    Categorie = createReparationModel.Reparation.Categorie,
+                    VoitureId = createReparationModel.Voiture.Id
+                });
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
             // GET: Reparations/Edit/5

@@ -1,4 +1,4 @@
-﻿@model p5.Models.Reparation
+﻿@model p5.Models.CreateReparationModel
 
 @{
     ViewData["Title"] = "Create";
@@ -18,8 +18,10 @@
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <label asp-for="Categorie" class="control-label">Catégorie de réparation</label>
-                <select asp-for="Categorie" class="form-control" asp-items="@ViewBag.Categories"></select>
+                <label asp-for="Voiture.Marque" class="control-label">Voiture</label>
+                <select asp-for="Voiture.Id" class="form-control" asp-items="@ViewBag.Voitures"></select>
+                <label asp-for="Reparation.Categorie" class="control-label">Catégorie de réparation</label>
+                <select asp-for="Reparation.Categorie" class="form-control" asp-items="@ViewBag.Categories"></select>
             </div>
             @*<div class="form-group">
                 <label asp-for="Nom" class="control-label"></label>
